@@ -25,7 +25,8 @@
 function start() {
   do {
     play();
-  } while ( confirm( "Viltu spila annan leik?" ) )
+  } while (confirm("Viltu spila annan leik?"))
+  getResults();
 }
 
 /**
@@ -43,13 +44,19 @@ function start() {
  * Þarf að útfæra með lykkju og flæðisstýringum
  */
 function play() {
+  const quit =  false;
   alert("Ég er að hugsa mér tölu milli 1 og 100. Sjáum hvað þú þarft margar ágiskanir til að finna hana!");
   let numberOfGuesses = 0;
   const random = randomNumber(1,100);
   do {
     const userGuess = prompt('Hvaða tölu er ég að hugsa mér? Svar: ');
     numberOfGuesses++;
-  } while ( getResponse(parseGuess(userGuess), random) !== "Rétt" )
+    if (userGuess === "" || userGuess === null) {
+      
+    }
+    const answer = getResponse(parseGuess(userGuess), random);
+  } while (answer !== "Rétt")
+  games.push(numberOfGuesses);
 }
 
 /**
@@ -62,7 +69,12 @@ function play() {
  *    "Þú spilaðir engann leik >_<"
  */
 function getResults(){
-
+  const numberOfGames = games.length;
+  const average = calculateAverage();
+  alert(`
+    Þú spilaðir ${numberOfGames} leiki. 
+    Meðalfjöldi ágiskana var ${average}.
+  `);
 }
 
 /**
@@ -74,7 +86,11 @@ function getResults(){
  * þarf að útfæra með lykkju.
  */
 function calculateAverage(){
-
+  let sum = 0;
+  for (i in games) {
+    sum += i;
+  }
+  return (sum / games.length);
 }
 
 /**
