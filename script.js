@@ -117,7 +117,21 @@ function parseGuess(input){
  * Math.abs skilar algildi tölu: |a| = Math.abs(a)
  */
 function getResponse(guess, correct){
-  return 'Ekki rétt';
+  if (isNaN(guess) || guess < 0) {
+    return 'Ekki rétt';
+  } else if (Math.abs(correct - guess) === 0) {
+    return 'Rétt';
+  } else if (Math.abs(correct - guess) < 5) {
+    return 'Mjög nálægt';
+  } else if (Math.abs(correct - guess) < 10) {
+    return 'Nálægt';
+  } else if (Math.abs(correct - guess) < 20) {
+    return 'Frekar langt frá';
+  } else if (Math.abs(correct - guess) < 50) {
+    return 'Langt frá';
+  } else {
+    return 'Mjög langt frá';
+  }
 }
 
 /**
