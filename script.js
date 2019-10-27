@@ -48,15 +48,20 @@ function play() {
   alert("Ég er að hugsa mér tölu milli 1 og 100. Sjáum hvað þú þarft margar ágiskanir til að finna hana!");
   let numberOfGuesses = 0;
   const random = randomNumber(1,100);
+  let answer = null;
   do {
     const userGuess = prompt('Hvaða tölu er ég að hugsa mér? Svar: ');
-    numberOfGuesses++;
-    if (userGuess === "" || userGuess === null) {
-      
+    if (userGuess === null) {
+      alert("Hætt í leik.");
+      return;
     }
-    const answer = getResponse(parseGuess(userGuess), random);
+    numberOfGuesses++;
+    const parsedGuess = parseGuess(userGuess);
+    answer = getResponse(parseGuess(userGuess), random);
+    alert(`${answer}`);
   } while (answer !== "Rétt")
   games.push(numberOfGuesses);
+  alert(`Þú notaðir ${numberOfGuesses} ágiskanir til að finna töluna.`)
 }
 
 /**
@@ -70,11 +75,18 @@ function play() {
  */
 function getResults(){
   const numberOfGames = games.length;
-  const average = calculateAverage();
-  alert(`
-    Þú spilaðir ${numberOfGames} leiki. 
-    Meðalfjöldi ágiskana var ${average}.
-  `);
+  if (numberOfGames === 0) {
+    alert(`
+      Þú spilaðir ${numberOfGames} leiki.
+      Þar með er ekki hægt að reikna meðaltal ágiskana í þínu tilviki.
+      `);
+  } else {
+    const average = +(calculateAverage().toFixed(2));
+    alert(`
+      Þú spilaðir ${numberOfGames} leiki. 
+      Meðalfjöldi ágiskana var ${average}.
+    `);
+  }
 }
 
 /**
@@ -98,7 +110,12 @@ function calculateAverage(){
  * Ef ekki er hægt að ná tölu úr input er skilað null
  */
 function parseGuess(input){
-
+  const parsedInput = parseInt(input);
+  if (isNaN(parsedInput)) {
+    return null;
+  } else {
+    return parsedInput;
+  }
 }
 
 /**
