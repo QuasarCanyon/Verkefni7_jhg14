@@ -9,8 +9,8 @@
  * Global fylki sem geymir fjölda ágiskana í leikjum
  * Ef fylki er tómt hefur enginn leikur verið spilaður.
  * Ef fylki er [2, 3] hafa verið spilaðir tveir leikir þar sem:
- *  - Fyrsti leikur kláraðist í tveim ágiskunum.
- *  - Seinni leikur kláraðist í þrem ágiskunum.
+ *  - Fyrsti leikur kláraðist í tveimur ágiskunum.
+ *  - Seinni leikur kláraðist í þremur ágiskunum.
  */
 
  const games = [];
@@ -20,10 +20,12 @@
   * Byrjar leikinn okkar með því að kalla í play().
   * Eftir að play() klárar þá er boðið notandanum að spila annann leik með confirm()
   * Ef notandi ýtir á "ok" þá er annar leikur spilaður.
-  * Ef notandi ýtir á "cancel" þá er sótt niðurstöður með getResults() og þær birtar með alert().
+  * Ef notandi ýtir á "cancel" þá eru sóttar niðurstöður með getResults() og þær birtar með alert().
   */
 function start() {
-  play();
+  do {
+    play();
+  } while ( confirm( "Viltu spila annan leik?" ) )
 }
 
 /**
@@ -32,21 +34,27 @@ function start() {
  *  - Biðja notanda um tölu með prompt()
  *  - Vinna úr intaki frá notanda með parseGuess()
  *  - Láta vita hversu nálægt eða rétt gisk er með getResponse() og alert()
- *  - Haldautan um fjölda ágiskana
+ *  - Halda utan um fjölda ágiskana
  *  - Vista fjölda ágiskana í "games" fylki þegar búið er að giska rétt
  * 
  * Ef notandi ýtir á cancel þegar beðið er um ágiskun skal hætta í leik en ekki vista ágiskanir
  *  - t.d. með því að nota break í lykkju.
  * 
- * Þarf aðútfæra með lykkju og flæðisstýringum
+ * Þarf að útfæra með lykkju og flæðisstýringum
  */
 function play() {
+  alert("Ég er að hugsa mér tölu milli 1 og 100. Sjáum hvað þú þarft margar ágiskanir til að finna hana!");
+  let numberOfGuesses = 0;
   const random = randomNumber(1,100);
+  do {
+    const userGuess = prompt('Hvaða tölu er ég að hugsa mér? Svar: ');
+    numberOfGuesses++;
+  } while ( getResponse(parseGuess(userGuess), random) !== "Rétt" )
 }
 
 /**
  * Skilar niðurstöðum um spilaða leiki sem streng.
- * Fjöldi liekja er skilað ásamt meðalfjölda giska, t.d.:
+ * Fjölda leikja er skilað ásamt meðalfjölda giska, t.d.:
  *    "þú spilaðir 10 leiki
  *     Meðalfjöldi ágiskana var 5"
  * ATH að meðalfjöldi kemur í nýrri línu.
@@ -58,8 +66,8 @@ function getResults(){
 }
 
 /**
- * Reiknar út og skilar meðal ágiskunum í öllum leikjum sem geymdir eru í 
- * global breytu "games". Skilar gildi með tveim aukastöfum.
+ * Reiknar út og skilar meðalfjölda ágiskana í öllum leikjum sem geymdir eru í 
+ * global breytu "games". Skilar gildi með tveimur aukastöfum.
  * Ef games = [3,3,4] er niðurstaðan (3+3+4)/3 = 3.66666667
  * og henni skilað sem 3.67
  * 
@@ -70,7 +78,7 @@ function calculateAverage(){
 }
 
 /**
- * tekur in input sem streng og skilar þeirri tölu sem hægt er að ná þar úr.
+ * Tekur in input sem streng og skilar þeirri tölu sem hægt er að ná þar úr.
  * Ef ekki er hægt að ná tölu úr input er skilað null
  */
 function parseGuess(input){
