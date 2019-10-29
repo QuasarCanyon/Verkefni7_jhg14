@@ -24,7 +24,10 @@
   */
 function start() {
   do {
-    play();
+    let finishedGame = play();
+    if (!finishedGame) {
+      break;
+    }
   } while (confirm("Viltu spila annan leik?"))
   getResults();
 }
@@ -53,7 +56,7 @@ function play() {
     const userGuess = prompt('Hvaða tölu er ég að hugsa mér? Svar: ');
     if (userGuess === null) {
       alert("Hætt í leik.");
-      return;
+      return false;
     }
     numberOfGuesses++;
     const parsedGuess = parseGuess(userGuess);
@@ -62,6 +65,7 @@ function play() {
   } while (answer !== "Rétt")
   games.push(numberOfGuesses);
   alert(`Þú notaðir ${numberOfGuesses} ágiskanir til að finna töluna.`)
+  return true;
 }
 
 /**
@@ -81,7 +85,7 @@ function getResults(){
       Þar með er ekki hægt að reikna meðaltal ágiskana í þínu tilviki.
       `);
   } else {
-    const average = +(calculateAverage().toFixed(2));
+    const average = calculateAverage();
     alert(`
       Þú spilaðir ${numberOfGames} leiki. 
       Meðalfjöldi ágiskana var ${average}.
@@ -99,8 +103,8 @@ function getResults(){
  */
 function calculateAverage(){
   let sum = 0;
-  for (i in games) {
-    sum += i;
+  for (let i = 0; i < games.length; i++) {
+    sum += games[i];
   }
   return (sum / games.length);
 }
